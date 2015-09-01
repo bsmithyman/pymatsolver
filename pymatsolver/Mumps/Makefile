@@ -1,10 +1,6 @@
-INCMUMPS  = -I/usr/local/Cellar/mumps/4.10.0/include -L/usr/local/Cellar/scotch5/5.1.12b/lib -I/usr/local/Cellar/scotch5/5.1.12b/include -I/usr/local/Cellar/open-mpi/1.8.3/include -L/usr/local/opt/libevent/lib -L/usr/local/Cellar/open-mpi/1.8.3/lib -lmpi
+INCMUMPS  = -I/usr/include -L/usr/lib -lmpi
 
-# brew install mumps --with-scotch5 --without-mpi
-# Helpful: mpicc --showme
-
-LIB = -lmpiseq -lzmumps -ldmumps -lsmumps -lmumps_common -lblas -lpord -lcmumps
-LIBSCOTCH = -lesmumps -lptscotch -lptscotcherrexit -lscotch -lscotcherrexit -lptesmumps -lptscotcherr -lptscotchparmetis -lscotcherr -lscotchmetis
+LIB = -lmpiseq_seq -lzmumps -ldmumps -lsmumps -lmumps_common -lblas -lpord -lcmumps
 
 all: clean build
 
@@ -14,7 +10,7 @@ build:
 	f2py -c mumps_interface.f90 -m MumpsInterface \
         $(INCMUMPS) \
         --f90flags='-fcray-pointer' \
-        $(LIB) $(LIBSCOTCH)\
+        $(LIB) \
         mumps_p.o mumps_cmplx_p.o
 	rm -f *.o *.mod
 
